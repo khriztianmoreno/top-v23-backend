@@ -1,7 +1,6 @@
 /**
  * Controller for user
  */
-
 import {
   createUser,
   getAllUser,
@@ -29,7 +28,9 @@ export async function getSingleUserHandler(req, res) {
       return res.status(404).json({ message: 'User not found' })
     }
 
-    return res.json(user)
+    const profile = user.profile
+
+    return res.json(profile)
   } catch (error) {
     return res.status(500).json({ error })
   }
@@ -46,6 +47,17 @@ export async function createUserHandler(req, res) {
   }
 }
 
-export function updateUserHandler(req, res) {}
+export async function updateUserHandler(req, res) {
+  const { id } = req.params
+  const userData = req.body
+
+  try {
+    const user = await updateUser(id, userData)
+
+    return res.status(200).json(user)
+  } catch (error) {
+    return res.status(500).json({ error })
+  }
+}
 
 export function deleteUserHandler(req, res) {}
