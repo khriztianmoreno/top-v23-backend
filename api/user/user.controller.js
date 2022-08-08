@@ -1,16 +1,16 @@
 /**
  * Controller for user
  */
-import {
+const {
   createUser,
   getAllUser,
   getSingleUser,
   findUserByEmail,
   updateUser,
   deleteUser,
-} from './user.service.js'
+} = require('./user.service');
 
-export async function getAllUserHandler(req, res) {
+async function getAllUserHandler(req, res) {
   try {
     const users = await getAllUser()
     return res.status(200).json(users)
@@ -19,7 +19,7 @@ export async function getAllUserHandler(req, res) {
   }
 }
 
-export async function getSingleUserHandler(req, res) {
+async function getSingleUserHandler(req, res) {
   const { id } = req.params
   try {
     const user = await getSingleUser(id)
@@ -36,7 +36,7 @@ export async function getSingleUserHandler(req, res) {
   }
 }
 
-export async function createUserHandler(req, res) {
+async function createUserHandler(req, res) {
   const userData = req.body
 
   try {
@@ -47,7 +47,7 @@ export async function createUserHandler(req, res) {
   }
 }
 
-export async function updateUserHandler(req, res) {
+async function updateUserHandler(req, res) {
   const { id } = req.params
   const userData = req.body
 
@@ -60,4 +60,12 @@ export async function updateUserHandler(req, res) {
   }
 }
 
-export function deleteUserHandler(req, res) {}
+function deleteUserHandler(req, res) {}
+
+module.exports = {
+  getAllUserHandler,
+  getSingleUserHandler,
+  createUserHandler,
+  updateUserHandler,
+  deleteUserHandler,
+}
