@@ -19,4 +19,4 @@ router.get('/:id', getSingleUserHandler);
 router.patch('/:id', updateUserHandler);
 router.delete('/:id', deleteUserHandler);
 
-export default router;
+module.exports = router;
