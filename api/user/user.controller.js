@@ -62,8 +62,10 @@ async function updateUserHandler(req, res) {
 
 function deleteUserHandler(req, res) {}
 
-exports.getAllUserHandler = getAllUserHandler;
-exports.getSingleUserHandler = getSingleUserHandler;
-exports.createUserHandler = createUserHandler;
-exports.updateUserHandler = updateUserHandler;
-exports.deleteUserHandler = deleteUserHandler;
+module.exports = {
+  getAllUserHandler,
+  getSingleUserHandler,
+  createUserHandler,
+  updateUserHandler,
+  deleteUserHandler,
+}
