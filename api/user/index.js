@@ -1,22 +1,22 @@
 /**
  * User API
  */
-import { Router } from 'express'
+const Router = require('express');
 
-import {
+const {
   createUserHandler,
   deleteUserHandler,
   getAllUserHandler,
   getSingleUserHandler,
   updateUserHandler,
-} from './user.controller.js'
+} = require('./user.controller');
 
 const router = Router();
 
-router.get('/', getAllUserHandler)
-router.post('/', createUserHandler)
-router.get('/:id', getSingleUserHandler)
-router.patch('/:id', updateUserHandler)
-router.delete('/:id', deleteUserHandler)
+router.get('/', getAllUserHandler);
+router.post('/', createUserHandler);
+router.get('/:id', getSingleUserHandler);
+router.patch('/:id', updateUserHandler);
+router.delete('/:id', deleteUserHandler);
 
 export default router;

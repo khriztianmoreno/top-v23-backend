@@ -1,25 +1,32 @@
-import User from './user.model.js'
+const User = require('./user.model');
 
-export function getAllUser() {
+function getAllUser() {
   return User.find({})
 }
 
-export function getSingleUser(id) {
+function getSingleUser(id) {
   return User.findById(id)
 }
 
-export function findUserByEmail(email) {
+function findUserByEmail(email) {
   return User.findOne({ email })
 }
 
-export function createUser(user) {
+function createUser(user) {
   return User.create(user)
 }
 
-export function updateUser(id, user) {
+function updateUser(id, user) {
   return User.findByIdAndUpdate(id, user, { new: true })
 }
 
-export function deleteUser(id) {
+function deleteUser(id) {
   return User.findByIdAndRemove(id)
 }
+
+exports.getAllUser = getAllUser;
+exports.getSingleUser = getSingleUser;
+exports.findUserByEmail = findUserByEmail;
+exports.createUser = createUser;
+exports.updateUser = updateUser;
+exports.deleteUser = deleteUser;

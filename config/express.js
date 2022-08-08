@@ -1,10 +1,10 @@
-import express  from 'express'
-import morgan from 'morgan'
+const express = require('express');
+const morgan = require('morgan');
 
 function configExpress(app) {
   // CORS
-  app.use(express.json())
-  app.use(morgan('dev'))
+  app.use(express.json());
+  app.use(morgan('dev'));
 }
 
-export default configExpress
+module.exports = configExpress;
