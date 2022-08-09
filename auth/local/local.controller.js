@@ -1,4 +1,5 @@
 const { findUserByEmail } = require('../../api/user/user.service')
+const { signToken } = require('../auth.service')
 
 async function loginUserHandler(req, res) {
   const { email, password } = req.body
@@ -15,7 +16,9 @@ async function loginUserHandler(req, res) {
       return res.status(401).json({ message: 'Password is incorrect' })
     }
 
-    return res.status(200).json(user.profile)
+    const token  = signToken({ email: user.email })
+
+    return res.status(200).json({ token, profile: user.profile })
   } catch (error) {
     return res.status(500).json({ error })
   }

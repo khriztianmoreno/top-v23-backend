@@ -5,6 +5,7 @@ const {
   updateCompany,
   deleteCompany,
 } = require('./company.service');
+const { verifyToken } = require('../../auth/auth.service');
 
 async function getAllCompaniesHandler(req, res) {
   const companies = await getAllCompanies();
@@ -26,10 +27,19 @@ async function getCompanyByIdHandler(req, res) {
 
 async function createCompanyHandler(req, res) {
   const { name, description } = req.body;
+  const headers = req.headers;
 
-  const company = await createCompany({ name, description });
+  const token = headers?.authorization?.split(' ')[1];
 
-  return res.status(201).json(company);
+  try {
+    await verifyToken(token)
+
+    const company = await createCompany({ name, description });
+
+    return res.status(201).json(company);
+  } catch (error) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
 }
 
 async function updateCompanyHandler(req, res) {
