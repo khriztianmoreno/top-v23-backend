@@ -6,6 +6,9 @@ function getAllJob() {
 
 function getSingleJob(id) {
   return Job.findById(id)
+    .populate({ path: 'company', select: 'name description' })
+    .populate({ path: 'candidates', select: 'firstName email' })
+    // .populate('company', 'name descriptio')
 }
 
 function findJob(query) {
@@ -20,11 +23,19 @@ function updateJob(id, job) {
   return Job.findByIdAndUpdate(id, job, { new: true })
 }
 
+function addCandidate(id, candidateId) {
+  return Job.findByIdAndUpdate(id,
+    { $push: { candidates: candidateId } },
+    { new: true }
+  )
+}
+
 function deleteJob(id) {
   return Job.findByIdAndRemove(id)
 }
 
 module.exports = {
+  addCandidate,
   getAllJob,
   getSingleJob,
   findJob,

@@ -1,4 +1,5 @@
 const {
+  addCandidate,
   getAllJob,
   getSingleJob,
   findJob,
@@ -80,7 +81,23 @@ async function deleteJobHandler(req, res) {
   }
 }
 
+async function addCandidateHandler(req, res) {
+  const { id } = req.params
+  const { candidateId } = req.body
+
+  try {
+    const job = await addCandidate(id, candidateId)
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found' })
+    }
+    return res.json(job)
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+}
+
 module.exports = {
+  addCandidateHandler,
   getAllJobHandler,
   getSingleJobHandler,
   findJobHandler,
