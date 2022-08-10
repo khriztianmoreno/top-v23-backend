@@ -1,27 +1,27 @@
 const User = require('./user.model');
 
 function getAllUser() {
-  return User.find({})
+  return User.find({});
 }
 
 function getSingleUser(id) {
-  return User.findById(id)
+  return User.findById(id);
 }
 
 function findUserByEmail(email) {
-  return User.findOne({ email })
+  return User.findOne({ email });
 }
 
 function createUser(user) {
-  return User.create(user)
+  return User.create(user);
 }
 
 function updateUser(id, user) {
-  return User.findByIdAndUpdate(id, user, { new: true })
+  return User.findByIdAndUpdate(id, user, { new: true });
 }
 
 function deleteUser(id) {
-  return User.findByIdAndRemove(id)
+  return User.findByIdAndRemove(id);
 }
 
 module.exports = {
@@ -31,4 +31,4 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
-}
+};

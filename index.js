@@ -5,10 +5,10 @@ const configExpress = require('./config/express');
 const routesConfig = require('./routes.js');
 const connectDatabase = require('./config/database');
 
-const app = express()
+const app = express();
 
-const PORT = process.env.PORT || 8080
-const NODE_ENV = process.env.NODE_ENV || 'development'
+const PORT = process.env.PORT || 8080;
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
 app.listen(PORT, async () => {
   // Configure express

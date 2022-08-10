@@ -5,7 +5,7 @@ function getAllCompanies() {
 }
 
 function getCompanyById(id) {
-  return Company.findById(id);
+  return Company.findById(id).populate('owner');
 }
 
 function createCompany(company) {

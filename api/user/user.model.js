@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const Payments = new mongoose.Schema({
   customerId: String,
@@ -12,9 +12,9 @@ const Payments = new mongoose.Schema({
       expYear: Number,
       funding: String,
       last4: String,
-    }
-  ]
-})
+    },
+  ],
+});
 
 const UserSchema = new mongoose.Schema({
   firstName: {
@@ -38,12 +38,12 @@ const UserSchema = new mongoose.Schema({
   },
   avatar: {
     type: String,
-    default: "",
+    default: '',
   },
   role: {
     type: String,
-    enum: ["user", "admin"],
-    default: "user",
+    enum: ['user', 'admin', 'company'],
+    default: 'user',
   },
   isActive: {
     type: Boolean,
@@ -51,27 +51,29 @@ const UserSchema = new mongoose.Schema({
   },
   passwordResetToken: String,
   passwordResetExpires: Date,
-  payments: [Payments]
+  payments: [Payments],
 }, { timestamps: true });
 
-UserSchema.virtual('fullName').get(function (){
-  const { firstName, lastName } = this
+UserSchema.virtual('fullName').get(function fullName() {
+  const { firstName, lastName } = this;
 
-  return `${firstName} ${lastName}`
-})
+  return `${firstName} ${lastName}`;
+});
 
-UserSchema.virtual('profile').get(function() {
-  const { firstName, lastName, email, role } = this
+UserSchema.virtual('profile').get(function profile() {
+  const {
+    firstName, lastName, email, role,
+  } = this;
 
   return {
     firstName,
     lastName,
     email,
     role,
-  }
-})
+  };
+});
 
-UserSchema.pre('save', async function (next) {
+UserSchema.pre('save', async function save(next) {
   const user = this;
 
   try {
@@ -87,7 +89,7 @@ UserSchema.pre('save', async function (next) {
   }
 });
 
-UserSchema.methods.comparePassword = async function (candidatePassword, next) {
+UserSchema.methods.comparePassword = async function comparePassword(candidatePassword, next) {
   const user = this;
 
   try {
@@ -96,9 +98,10 @@ UserSchema.methods.comparePassword = async function (candidatePassword, next) {
     return isMatch;
   } catch (error) {
     next(error);
+    return false;
   }
-}
+};
 
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model('User', UserSchema);
 
 module.exports = User;
