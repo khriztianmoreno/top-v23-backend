@@ -1,7 +1,7 @@
 const Job = require('./job.model');
 
 function getAllJob() {
-  return Job.find({});
+  return Job.find({}).populate({ path: 'company', select: 'name' });
 }
 
 function getSingleJob(id) {
