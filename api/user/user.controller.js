@@ -1,6 +1,8 @@
 /**
  * Controller for user
  */
+const crypto = require('crypto');
+
 const {
   createUser,
   getAllUser,
@@ -8,7 +10,7 @@ const {
   updateUser,
   deleteUser,
 } = require('./user.service');
-const { sendNodeMailer } = require('../../utils/mail');
+const { sendMailSendGrid } = require('../../utils/mail');
 
 async function getAllUserHandler(req, res) {
   try {
@@ -40,20 +42,28 @@ async function createUserHandler(req, res) {
   const userData = req.body;
 
   try {
+    const hash = crypto.createHash('sha256')
+      .update(userData.email)
+      .digest('hex');
+
+    userData.passwordResetToken = hash;
+    userData.passwordResetExpires = Date.now() + 3_600_000 * 24; // 24 hour
+
     const user = await createUser(userData);
     // Send email to user
     const message = {
-      from: '"no-reply" <info@top-v23.com>', // sender address
+      from: '"no-reply" <cristian.moreno@makeitreal.camp>', // sender address
       to: user.email, // list of receivers
-      subject: 'Active account', // Subject line
-      html: `
-        <h1 style="color: green;">Welcome</h1>
-        <p style="color: #0070f3;">Please click in this link to active account</p>
-        <a href="http://localhost:3000/verify-account/token" target="_blank" rel="noopener noreferrer">Verify</a>
-      `,
+      subject: 'Activate account Template', // Subject line
+      template_id: 'd-649011f35b854690a0e5f47de11eb2f2', // template id
+      dynamic_template_data: {
+        firstName: user.profile.firstName.toUpperCase(),
+        lastName: user.profile.lastName.toUpperCase(),
+        url: `${process.env.FRONTEND_URL}/verify-account/${hash}`,
+      },
     };
 
-    await sendNodeMailer(message);
+    await sendMailSendGrid(message);
 
     return res.status(201).json(user);
   } catch (error) {
@@ -74,15 +84,15 @@ async function updateUserHandler(req, res) {
   }
 }
 
-function deleteUserHandler(req, res) {
+async function deleteUserHandler(req, res) {
   const { id } = req.params;
 
   try {
-    const user = deleteUser(id);
+    await deleteUser(id);
 
-    return res.status(200).json(user);
+    return res.status(200).json(null);
   } catch (error) {
-    return res.status(500).json({ error });
+    return res.status(500).json(error);
   }
 }
 

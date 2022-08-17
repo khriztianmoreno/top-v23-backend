@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const sendgrid = require('@sendgrid/mail');
 
 function createGmailTransporter() {
   const transporter = nodemailer.createTransport({
@@ -22,6 +23,13 @@ async function sendNodeMailer(data) {
   return info;
 }
 
+function sendMailSendGrid(data) {
+  sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
+
+  return sendgrid.send(data);
+}
+
 module.exports = {
   sendNodeMailer,
+  sendMailSendGrid,
 };
