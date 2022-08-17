@@ -8,6 +8,7 @@ const {
   updateUser,
   deleteUser,
 } = require('./user.service');
+const { sendNodeMailer } = require('../../utils/mail');
 
 async function getAllUserHandler(req, res) {
   try {
@@ -40,6 +41,20 @@ async function createUserHandler(req, res) {
 
   try {
     const user = await createUser(userData);
+    // Send email to user
+    const message = {
+      from: '"no-reply" <info@top-v23.com>', // sender address
+      to: user.email, // list of receivers
+      subject: 'Active account', // Subject line
+      html: `
+        <h1 style="color: green;">Welcome</h1>
+        <p style="color: #0070f3;">Please click in this link to active account</p>
+        <a href="http://localhost:3000/verify-account/token" target="_blank" rel="noopener noreferrer">Verify</a>
+      `,
+    };
+
+    await sendNodeMailer(message);
+
     return res.status(201).json(user);
   } catch (error) {
     return res.status(500).json({ error });
