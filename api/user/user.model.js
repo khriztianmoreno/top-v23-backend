@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-const Payments = new mongoose.Schema({
+const Payment = new mongoose.Schema({
   customerId: String,
   cards: [
     {
@@ -51,7 +51,7 @@ const UserSchema = new mongoose.Schema({
   },
   passwordResetToken: String,
   passwordResetExpires: Date,
-  payments: [Payments],
+  payment: Payment,
 }, { timestamps: true });
 
 UserSchema.virtual('fullName').get(function fullName() {
